@@ -1,0 +1,30 @@
+import pandas as pd
+dataset=pd.read_csv(r"C:\Users\jeedi\Downloads\early+stage+diabetes+risk+prediction+dataset\diabetes_data_upload.csv")
+dataset.head()
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+b=list(dataset.columns[1:-1])
+for i in b:
+    dataset[i]=le.fit_transform(dataset[i])
+
+
+
+x=dataset.iloc[ : , :-1].values
+y=dataset.iloc[ : ,-1].values
+
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.20,random_state=9)
+
+#knn model
+from sklearn.neighbors import KNeighborsClassifier
+modelknn=KNeighborsClassifier(n_neighbors=9)
+modelknn.fit(x_train,y_train)
+
+ypredknn=modelknn.predict(x_test)
+from sklearn import metrics
+print('knn',metrics.accuracy_score(y_test,ypredknn)*100)
+
+print(modelknn.predict([[31,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0]]))
+
